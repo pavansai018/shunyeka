@@ -1,7 +1,9 @@
-FROM python:alpine3.7
+FROM ubuntu:latest
+RUN apt update
+RUN apt install python3 -y
 COPY . /app
 WORKDIR /app
+COPY hello.py ./
 RUN pip3 install -r requirements.txt
 EXPOSE 5000
-ENTRYPOINT [ "python" ]
-CMD [ "hello.py" ]
+CMD ["python3" "./hello.py" ]
