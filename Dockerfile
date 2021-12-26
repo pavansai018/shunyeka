@@ -1,10 +1,19 @@
-FROM python:3.8-slim-buster
+FROM public.ecr.aws/bitnami/python:3.6
 
+# Create app directory
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+# Copy the requirements file
+COPY requirements.txt .
 
+# Install app dependencies
+RUN pip install -r requirements.txt
+
+
+
+# Copy the whole folder inside the Image filesystem
 COPY . .
 
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
+EXPOSE 80
+
+CMD gunicorn --bind 0.0.0.0:80 wsgi:app
